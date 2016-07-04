@@ -1,13 +1,15 @@
 package fu.db;
 
 import java.util.HashMap;
+import java.sql.SQLException;
+
 
 public class QueryInputReader {
 
 	private boolean _performs = true;
-	private HashMap<String,String> _results;
+	private WorkingQuery _results;
 
-	public QueryInputReader(String[] args) throws InvalidInputQuery {
+	public QueryInputReader(String[] args) throws InvalidInputQuery, SQLException {
 
 		try {
 			switch(args[0]) {
@@ -30,17 +32,15 @@ public class QueryInputReader {
 		return _performs;
 	}
 
-	public HashMap<String,String> getResults() {
+	public WorkingQuery getValidatedInput() {
 		return _results;
 	}
 
-	public void analyzeQuery(String[] args) throws InvalidInputQuery {
+	public void analyzeQuery(String[] args) throws InvalidInputQuery, SQLException {
 		try {
 			switch(args[1]) {
 				case "birthyear":
-					_results = new HashMap<>();
-					_results.put("query",args[1]);
-					_results.put("value",args[2]);
+					_results = new WorkingQuery(args[1],args[2]);
 					break;
 				default:
 					throw new InvalidInputQuery();
